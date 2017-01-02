@@ -1,0 +1,20 @@
+{
+    "name": "inani/messager",
+    "description": "A simple package to handle messages",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Inani El Houssain",
+            "email": "inanielhoussain@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Inani\\Messager\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "require": {
+        "illuminate/support": "~5"
+    }
+}
