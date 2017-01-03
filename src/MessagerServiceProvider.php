@@ -11,8 +11,8 @@ class MessagerServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('messager', function($app) {
-            return new Messager;
+        $this->app->bind('Message', function() {
+            return new Message;
         });
     }
 
@@ -22,6 +22,10 @@ class MessagerServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        require __DIR__ . '/Http/routes.php';
+        // php artisan vendor:publish
+        $this->publishes([
+            __DIR__. '/migrations/2017_01_02_201510_create_messages_table.php'
+            => base_path('database/migrations/2017_01_02_201510_create_messages_table.php')
+        ]);
     }
 }
