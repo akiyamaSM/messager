@@ -2,6 +2,8 @@
 
 namespace Inani\Messager\Helpers;
 
+use App\User;
+
 trait MessageStatus
 {
     /**
@@ -129,7 +131,7 @@ trait MessageStatus
     {
         if(! is_null($this->from_id))
         {
-            return User::find($this->from_id)->count() == 1;
+            return ! is_null(User::find($this->from_id));
         }
         return false;
     }
