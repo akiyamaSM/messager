@@ -14,20 +14,26 @@ class MessageHandler {
     const READ = 2;
 
     /**
-     * Get An array and return two objects
+     * Get an array and return two objects
      *
      * @param array $attribute
      * @return array
      */
     public  static function create(array $attribute)
     {
-        return [
-            new Message(
-                [
-                    'content' => $attribute['content'],
-                ]
-            ),
-            User::findOrFail($attribute['to_id'])
-        ];
+        $message = null;
+        $user = null;
+
+        if(array_key_exists('content', $attribute))
+        {
+            $message = new Message(['content' => $attribute['content']]);
+        }
+
+        if(array_key_exists('to_id', $attribute))
+        {
+            $user = User::find($attribute['to_id']);
+        }
+
+        return [$message , $user];
     }
 }
