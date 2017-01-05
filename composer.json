@@ -9,12 +9,17 @@
         }
     ],
     "autoload": {
+        "classmap": [
+          "vendor/laravel/laravel/tests/TestCase.php"
+        ],
         "psr-4": {
             "Inani\\Messager\\": "src/"
         }
     },
     "minimum-stability": "dev",
     "require": {
+        "phpunit/phpunit" : "5.*",
+        "fzaninotto/faker": "~1.4",
         "illuminate/support": "~5"
     }
 }

@@ -5,6 +5,7 @@ namespace Inani\Messager\Tests;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\User;
 use Inani\Messager\Helpers\MessageHandler;
+use Inani\Messager\Message;
 
 class MessagesTest extends \TestCase
 {
@@ -21,16 +22,9 @@ class MessagesTest extends \TestCase
     protected $receiver;
 
     /** @test */
-    public function it_asserts_true()
-    {
-        $this->assertTrue(true);
-    }
-
-    /** @test */
     public function it_sends_message()
     {
-        $this->sender = User::find(19); // will be changed later
-        $this->receiver = User::find(20); // will be changed later
+        $this->makeUsers();
 
         $data = [
             'content' => 'SomeContent',
@@ -45,5 +39,103 @@ class MessagesTest extends \TestCase
             ->send();
 
         $this->assertEquals(1, $this->sender->sent()->count());
+    }
+
+    /** @test */
+    public function it_saves_message_in_draft()
+    {
+        $this->makeUsers();
+
+        $data = [
+            'content' => 'SomeContent',
+            'to_id' => $this->receiver->id
+        ];
+
+        list($message, $receiver) = MessageHandler::create($data);
+
+        $this->sender->writes($message)
+                     ->to($receiver)
+                     ->draft()
+                     ->keep();
+
+        $this->assertEquals(1, $this->sender->sent()->inDraft()->count());
+    }
+
+    /** @test */
+    public function he_checks_his_unseen_messages()
+    {
+        $this->makeUsers();
+
+        $data = [
+            'content' => 'SomeContent',
+            'to_id' => $this->receiver->id
+        ];
+
+        list($message, $receiver) = MessageHandler::create($data);
+
+        $this->sender
+            ->writes($message)
+            ->to($receiver)
+            ->send();
+
+        // check there is a non read message
+        $this->assertEquals(
+            1, $this->receiver->received()->from($this->sender)->unSeen()->count()
+        );
+    }
+
+    /** @test */
+    public function he_reads_unseen_messages()
+    {
+        $this->makeUsers();
+
+        $data = [
+            'content' => 'SomeContent',
+            'to_id' => $this->receiver->id
+        ];
+
+        list($message, $receiver) = MessageHandler::create($data);
+
+        $this->sender
+            ->writes($message)
+            ->to($receiver)
+            ->send();
+
+
+        $updated = $this->receiver->received()
+                        ->from($this->sender)
+                        ->unSeen()
+                        ->readThem();
+
+        $this->assertEquals(1, $updated);
+    }
+
+    /** @test */
+    public function he_keeps_in_draft_without_receiver()
+    {
+        $this->makeUsers();
+
+        $data = [
+            'content' => 'SomeContent',
+        ];
+
+        list($message, $receiver) = MessageHandler::create($data);
+
+        $instance = $this->sender->writes($message)
+                             ->draft()
+                             ->keep();
+
+        // check if the returned value is a Message
+        $this->assertTrue($instance instanceof Message);
+    }
+
+    /**
+     * it creates two users
+     *
+     */
+    public function makeUsers()
+    {
+        $this->sender = factory(User::class)->create(); // will be changed later
+        $this->receiver = factory(User::class)->create(); // will be changed later
     }
 }

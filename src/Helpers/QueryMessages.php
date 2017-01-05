@@ -79,6 +79,7 @@ trait QueryMessages
 
     /**
      * Read the selected Messages
+     *
      * @param $query
      * @return mixed
      */
