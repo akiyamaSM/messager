@@ -129,13 +129,36 @@ class MessagesTest extends \TestCase
         $this->assertTrue($instance instanceof Message);
     }
 
+    /** @test */
+    public function he_reads_specific_message()
+    {
+        $this->makeUsers();
+
+        $data = [
+            'content' => 'SomeContent',
+            'to_id' => $this->receiver->id
+        ];
+
+        list($message, $receiver) = MessageHandler::create($data);
+
+        $this->sender
+            ->writes($message)
+            ->to($receiver)
+            ->send();
+
+        $updated = $this->receiver->received()
+                                  ->select($message)
+                                  ->readThem();
+        $this->assertEquals(1, $updated);
+    }
+    
     /**
      * it creates two users
      *
      */
     public function makeUsers()
     {
-        $this->sender = factory(User::class)->create(); // will be changed later
-        $this->receiver = factory(User::class)->create(); // will be changed later
+        $this->sender = factory(User::class)->create();
+        $this->receiver = factory(User::class)->create();
     }
 }
