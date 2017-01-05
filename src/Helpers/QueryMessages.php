@@ -2,6 +2,7 @@
 namespace Inani\Messager\Helpers;
 
 use App\User;
+use Inani\Messager\Message;
 
 trait QueryMessages
 {
@@ -41,6 +42,26 @@ trait QueryMessages
         if( is_array($to))
         {
             return $query->whereIn('to_id', $to);
+        }
+    }
+
+
+    /**
+     * Get the messages sent to the user|users.
+     *
+     * @param $query
+     * @param Message|array $messages
+     * @return mixed
+     */
+    public function scopeSelect($query, $messages)
+    {
+        if($messages instanceof self)
+        {
+            return $query->where('id', $messages->id);
+        }
+        if( is_array($messages))
+        {
+            return $query->whereIn('id', $messages);
         }
     }
 
