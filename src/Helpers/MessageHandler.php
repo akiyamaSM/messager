@@ -9,9 +9,15 @@ use App\User;
 
 class MessageHandler {
 
+    // State of the Message
     const DRAFT = 0;
     const AVAILABLE = 1;
     const READ = 2;
+
+    // Delete state of the Messages
+    const NOT_DELETED = 0;
+    const DELETED = 1;
+
 
     /**
      * Get an array and return two objects
