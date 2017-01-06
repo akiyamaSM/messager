@@ -101,7 +101,6 @@ class MessagesTest extends \TestCase
             ->to($receiver)
             ->send();
 
-
         $updated = $this->receiver->received()
                         ->from($this->sender)
                         ->unSeen()
@@ -150,6 +149,33 @@ class MessagesTest extends \TestCase
                                   ->select($message)
                                   ->readThem();
         $this->assertEquals(1, $updated);
+    }
+
+    /** @test */
+    public function user_responds_in_the_conversation()
+    {
+        $this->makeUsers();
+
+        $data = [
+            'content' => 'Root of the conversation',
+            'to_id' => $this->receiver->id
+        ];
+
+        list($message, $receiver) = MessageHandler::create($data);
+
+        $this->sender
+            ->writes($message)
+            ->to($receiver)
+            ->send();
+
+        $res = new Message( ['content' => 'a response']);
+
+        $this->receiver->writes($res)
+            ->to($this->sender)
+            ->responds($message)
+            ->send();
+
+        $this->assertEquals(1, $message->conversation()->count());
     }
     
     /**
