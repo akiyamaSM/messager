@@ -123,4 +123,16 @@ trait MessageAccessible
         }
         return false;
     }
+
+    /**
+     * Just take the id of the root
+     *
+     * @param Message $mayBeRoot
+     * @return $this
+     */
+    public function responds(Message $mayBeRoot)
+    {
+        $this->message->setRoot($mayBeRoot);
+        return $this;
+    }
 }
