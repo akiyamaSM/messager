@@ -21,8 +21,8 @@ class CreateMessagesTable extends Migration
             $table->text('content');
             $table->integer('state')->default(0);
 
-            $table->timestamp('archived_at_from')->default(0);
-            $table->timestamp('archived_at_to')->default(0);
+            $table->integer('archived_at_from')->default(0);
+            $table->integer('archived_at_to')->default(0);
             $table->timestamps();
 
             $table->foreign('root_id')->references('id')->on('messages');

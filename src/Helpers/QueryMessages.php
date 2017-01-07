@@ -121,4 +121,43 @@ trait QueryMessages
         return $query->whereNotNull('to_id')
                     ->update(['state' => MessageHandler::AVAILABLE]);
     }
+
+    /**
+     * Get the Roots of conversations
+     *
+     * @param $query
+     * @return mixed
+     */
+    public function scopeRoots($query)
+    {
+        return $query->whereNull('root_id');
+    }
+
+    /**
+     * Delete from the user the selected Messages
+     *
+     * @param $query
+     * @param User $user
+     * @return mixed
+     */
+    public function scopeDelete($query, User $user)
+    {
+        $case1 = $query->where('from_id', $user->id)->update(['deleted_at_from' => MessageHandler::DELETED]);
+        $case2 = $query->where('to_id', $user->id)->update(['deleted_at_to' => MessageHandler::DELETED]);
+        return ($case1 + $case2);
+    }
+
+
+    /**
+     * Deleted Messages by a user
+     *
+     * @param $query
+     * @param User $user
+     */
+    public function scopeDeleted($query, User $user)
+    {
+        $case1 = $query->where('from_id', $user->id)->count();
+        $case2 = $query->where('to_id', $user->id)->count();
+        return $case1 + $case2;
+    }
 }

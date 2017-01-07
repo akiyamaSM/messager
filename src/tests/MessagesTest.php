@@ -177,7 +177,30 @@ class MessagesTest extends \TestCase
 
         $this->assertEquals(1, $message->conversation()->count());
     }
-    
+
+
+    public function it_deletes_messages_from_the_interface_of_a_user()
+    {
+        $this->makeUsers();
+
+        $data = [
+            'content' => 'Root of the conversation',
+            'to_id' => $this->receiver->id
+        ];
+
+        list($message, $receiver) = MessageHandler::create($data);
+
+        $this->sender
+            ->writes($message)
+            ->to($receiver)
+            ->send();
+
+        Message::select($message)->delete($this->sender);
+
+        $this->assertEquals(1, Message::deleted($this->sender));
+
+        $this->assertEquals(0, Message::deleted($this->receiver));
+    }
     /**
      * it creates two users
      *
