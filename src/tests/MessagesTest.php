@@ -201,6 +201,42 @@ class MessagesTest extends \TestCase
 
         $this->assertEquals(0, Message::deleted($this->receiver));
     }
+
+    /** @test */
+    public function he_reads_only_his_unread_messages()
+    {
+        $this->makeUsers();
+
+        $data = [
+            'content' => 'SomeContent',
+            'to_id' => $this->receiver->id
+        ];
+
+        list($message, $receiver) = MessageHandler::create($data);
+
+        $this->sender->writes($message)
+            ->to($receiver)
+            ->draft()
+            ->keep();
+
+        $this->assertEquals(0, $this->receiver->received()->unSeen()->count());
+
+        $this->sender->sent()->inDraft()->send();
+
+        $this->assertEquals(1, $this->receiver->received()->unSeen()->count());
+        $res = new Message( ['content' => 'a response']);
+
+        $this->sender->writes($res)
+                    ->to($this->receiver)
+                    ->responds($message)
+                    ->send();
+
+        $this->assertEquals(2, $this->receiver->received()->unSeen()->count());
+
+        $message->getConversation()->receivedBy($this->receiver)->readThem();
+
+        $this->assertEquals(0, $this->receiver->received()->unSeen()->count());
+    }
     /**
      * it creates two users
      *

@@ -22,7 +22,7 @@ class Message extends Model
      */
     public function conversation()
     {
-        return $this->hasMany(self::class, 'root_id');
+        return $this->hasMany(Message::class, 'root_id');
     }
 
     /**
@@ -32,7 +32,7 @@ class Message extends Model
      */
     public function root()
     {
-        return $this->belongsTo(self::class, 'root_id', 'id');
+        return $this->belongsTo(Message::class, 'root_id', 'id');
     }
 
     /**
