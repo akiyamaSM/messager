@@ -160,4 +160,30 @@ trait QueryMessages
         $case2 = $query->where('to_id', $user->id)->count();
         return $case1 + $case2;
     }
+
+    /**
+     * Get the conversation that the current message belongs
+     * 
+     * @return mixed
+     */
+    public function getConversation()
+    {
+        $root = $this->getRootOfConversation();
+        // include the roots
+        return ($root->conversation()->orWhere('id', $root->id));
+    }
+
+
+    /**
+     * Get the Messages received by a user not in the draft
+     *
+     * @param $query
+     * @param User $user
+     * @return mixed
+     */
+    public function scopeReceivedBy($query, User $user)
+    {
+        return $query->where('to_id', $user->id)
+                     ->where('state', '!=', MessageHandler::DRAFT);
+    }
 }
