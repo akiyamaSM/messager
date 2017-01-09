@@ -93,30 +93,6 @@ trait QueryMessages
     }
 
     /**
-     * Read the selected Messages
-     *
-     * @param $query
-     * @return mixed
-     */
-    public function scopeReadThem($query)
-    {
-        return $query->where('state', '!=', MessageHandler::DRAFT)
-                     ->update(['state' => MessageHandler::READ]);
-    }
-
-    /**
-     * Send the selected Messages
-     *
-     * @param $query
-     * @return mixed
-     */
-    public function scopeSend($query)
-    {
-        return $query->whereNotNull('to_id')
-                    ->update(['state' => MessageHandler::AVAILABLE]);
-    }
-
-    /**
      * Get the Roots of conversations
      *
      * @param $query
@@ -166,7 +142,6 @@ trait QueryMessages
         // include the roots
         return ($root->conversation()->orWhere('id', $root->id));
     }
-
 
     /**
      * Get the Messages received by a user not in the draft

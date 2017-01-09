@@ -130,4 +130,15 @@ trait MessageStatus
         }
         return false;
     }
+
+    /**
+     * Check if the current message instance
+     * is root of a conversation
+     *
+     * @return bool
+     */
+    public function isRoot()
+    {
+        return is_null($this->root_id);
+    }
 }

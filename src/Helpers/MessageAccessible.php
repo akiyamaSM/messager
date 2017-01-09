@@ -93,7 +93,8 @@ trait MessageAccessible
      */
     public function draft()
     {
-        if ($this->message->canBeSetAsDraft()) {
+        if($this->message->canBeSetAsDraft())
+        {
             $this->message->state = MessageHandler::DRAFT;
             return $this;
         }
@@ -125,6 +126,33 @@ trait MessageAccessible
     public function responds(Message $mayBeRoot)
     {
         $this->message->setRoot($mayBeRoot);
+        return $this;
+    }
+
+    /**
+     * Get the root of conversation
+     *
+     * @return $this|\Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function getRootOfConversation()
+    {
+        if($this->isRoot())
+        {
+            return $this;
+        }
+
+        return $this->root;
+    }
+
+    /**
+     * Assign the id of root
+     *
+     * @param Message $mayBeRoot
+     * @return Message
+     */
+    public function setRoot(Message $mayBeRoot)
+    {
+        $this->root_id = $mayBeRoot->getRootOfConversation($mayBeRoot)->id;
         return $this;
     }
 }
