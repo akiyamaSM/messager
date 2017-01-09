@@ -145,7 +145,6 @@ $messages = $userA->sent()->to($userB)->get();
 // OR you can pass an array of IDs
 $messages = $userA->received()->to([2, 3, 4, 5)->get();
 ```
-### Unread messages
 
 ### Draft messages
 ```php
