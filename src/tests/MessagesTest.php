@@ -9,7 +9,7 @@ use Inani\Messager\Message;
 
 class MessagesTest extends \TestCase
 {
-    use DatabaseTransactions;
+    //use DatabaseTransactions;
 
     /**
      * @var User
@@ -237,6 +237,48 @@ class MessagesTest extends \TestCase
 
         $this->assertEquals(0, $this->receiver->received()->unSeen()->count());
     }
+
+    /** @test */
+    public function it_gets_stats_of_messages()
+    {
+        $this->makeUsers();
+
+        $data = [
+            'content' => 'Root of the conversation',
+            'to_id' => $this->receiver->id
+        ];
+
+        list($message, $receiver) = MessageHandler::create($data);
+
+        // conversation one
+        $this->sender
+            ->writes($message)
+            ->to($receiver)
+            ->send();
+
+        // response
+        $res = new Message( ['content' => 'a response']);
+
+        $this->sender->writes($res)
+            ->to($receiver)
+            ->responds($message)
+            ->send();
+
+        $n = new Message( ['content' => 'a new Conversation']);
+        // conversation two
+        $this->sender
+            ->writes($n)
+            ->to($receiver)
+            ->send();
+
+        $this->assertTrue($this->receiver->received()->conversation($message)->hasNewMessages());
+        // Number of Conversations
+        $this->assertEquals(2, $this->receiver->received()->unSeenConversations());
+
+        // Number of unseen messages in total
+        $this->assertEquals(3, $this->receiver->received()->unSeen()->count());
+    }
+
     /**
      * it creates two users
      *
