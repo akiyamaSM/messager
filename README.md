@@ -8,11 +8,13 @@ __Table of Contents__
 3. [Creating & Sending Messages](#creating--sending-messages)
     1. [Creating a message](#creating-a-message)
     2. [Sending the message](#sending-the-message)
-    3. [Drafting a message](#drafting-a-message)
+    3. [Responding the message](#responding-the-message)
+    4. [Drafting a message](#drafting-a-message)
 4. [Working with Messages](#how-to-use)
     1. [Getting messages between users](#getting-messages-between-users)
-    2. [Unread messages](#unread-messages)
-    3. [Draft messages](#draft-messages)
+    2. [Read messages](#read-selected-messages)
+    3. [Unread messages](#unread-messages)
+    4. [Draft messages](#draft-messages)
 
 ## Installation:
 First, install the package through Composer.
@@ -77,6 +79,16 @@ $sent = $sender->writes($message)
                  ->send();
 ```
 
+### Respond to the message(conversation)
+```php
+$sender = User::find(2);
+
+$sent = $user->writes($newMessage)
+                 ->to($sender)
+		 ->responds($message)
+                 ->send();
+```
+
 ### Drafting a message
 ```php
 $sender = User::find(2);
@@ -104,7 +116,12 @@ $messages = $userA->received()->from($userB)->seen()->get();
 // OR you can pass an array of IDs 
 $messages = $userA->received()->from([2, 3, 4, 5])->seen()->get();
 ```
+### Read messages
+```php
+// Set the selected message(or id of messages as read)
+$count = $userB->received()->select($message)->readThem();
 
+```
 ### Unread messages
 ```php
 // Get unread messages from UserB to User A
@@ -112,6 +129,12 @@ $messages = $userA->received()->from($userB)->unSeen()->get();
 
 // Marking them as read
 $messages = $userA->received()->from($userB)->unSeen()->readThem();
+
+// check out if a conversation has new messages
+$bool = $userA->received()->conversation($message)->hasNewMessages();
+
+// Get the number of conversations that have new messages in it
+$number = $userA->received()->unSeenConversations();
 ```
 
 ### Sent messages
@@ -122,7 +145,7 @@ $messages = $userA->sent()->to($userB)->get();
 // OR you can pass an array of IDs
 $messages = $userA->received()->to([2, 3, 4, 5)->get();
 ```
-
+### Unread messages
 
 ### Draft messages
 ```php
