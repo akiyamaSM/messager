@@ -186,4 +186,51 @@ trait QueryMessages
         return $query->where('to_id', $user->id)
                      ->where('state', '!=', MessageHandler::DRAFT);
     }
+
+    /**
+     * Get Messages that has been seen.
+     *
+     * @param $query
+     * @return mixed
+     */
+    public function scopeUnSeenConversations($query)
+    {
+        $query2 = clone $query;
+        // case of a conversation having an unread response at least
+        $case1 =  $query->whereNotNull('root_id')->distinct('root_id')->count();
+
+        // case of conversation with no replay yet
+        $case2 = $query2->whereNull('root_id')->whereNotIn('id', function($query) {
+                    $query->select('root_id')->whereNotNull('root_id')
+                          ->distinct()->from('messages')
+                          ->where('state', MessageHandler::AVAILABLE)
+                          ->pluck('root_id');
+        })->count();
+
+        return $case1 + $case2;
+    }
+
+    /**
+     * Get the messages related to this conversation
+     *
+     * @param $query
+     * @param Message $message
+     * @return mixed
+     */
+    public function scopeConversation($query, Message $message)
+    {
+        return $query->where('root_id', $message->id);
+    }
+
+
+    /**
+     * Get the number of new messages related to this conversation
+     *
+     * @param $query
+     * @return mixed
+     */
+    public function scopeHasNewMessages($query)
+    {
+        return $query->where('state', MessageHandler::AVAILABLE)->count() > 0;
+    }
 }
