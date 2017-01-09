@@ -38,15 +38,12 @@ trait MessageAccessible
      */
     public static function createFromRequest($attribute)
     {
-        if($attribute instanceof Request)
-        {
+        if ($attribute instanceof Request) {
             return MessageHandler::create($attribute->all());
         }
-        if(is_array($attribute))
-        {
+        if (is_array($attribute)) {
             return MessageHandler::create($attribute);
         }
-
     }
 
     /**
@@ -81,10 +78,8 @@ trait MessageAccessible
      */
     public function send()
     {
-        if($this->message->hasSender())
-        {
-            if($this->message->setAsAvailable()->save())
-            {
+        if ($this->message->hasSender()) {
+            if ($this->message->setAsAvailable()->save()) {
                 return $this->message;
             }
         }
@@ -98,8 +93,7 @@ trait MessageAccessible
      */
     public function draft()
     {
-        if($this->message->canBeSetAsDraft())
-        {
+        if ($this->message->canBeSetAsDraft()) {
             $this->message->state = MessageHandler::DRAFT;
             return $this;
         }
@@ -114,10 +108,8 @@ trait MessageAccessible
      */
     public function keep()
     {
-        if($this->message->isDraft())
-        {
-            if($this->message->save())
-            {
+        if ($this->message->isDraft()) {
+            if ($this->message->save()) {
                 return $this->message;
             }
         }

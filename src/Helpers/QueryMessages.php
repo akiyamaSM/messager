@@ -16,12 +16,10 @@ trait QueryMessages
      */
     public function scopeFrom($query, $from)
     {
-        if($from instanceof User)
-        {
+        if ($from instanceof User) {
             return $query->where('from_id', $from->id);
         }
-        if( is_array($from))
-        {
+        if (is_array($from)) {
             return $query->whereIn('from_id', $from);
         }
     }
@@ -35,12 +33,10 @@ trait QueryMessages
      */
     public function scopeTo($query, $to)
     {
-        if($to instanceof User)
-        {
+        if ($to instanceof User) {
             return $query->where('to_id', $to->id);
         }
-        if( is_array($to))
-        {
+        if (is_array($to)) {
             return $query->whereIn('to_id', $to);
         }
     }
@@ -55,12 +51,10 @@ trait QueryMessages
      */
     public function scopeSelect($query, $messages)
     {
-        if($messages instanceof self)
-        {
+        if ($messages instanceof self) {
             return $query->where('id', $messages->id);
         }
-        if( is_array($messages))
-        {
+        if (is_array($messages)) {
             return $query->whereIn('id', $messages);
         }
     }
@@ -163,7 +157,7 @@ trait QueryMessages
 
     /**
      * Get the conversation that the current message belongs
-     * 
+     *
      * @return mixed
      */
     public function getConversation()
@@ -200,7 +194,7 @@ trait QueryMessages
         $case1 =  $query->whereNotNull('root_id')->distinct('root_id')->count();
 
         // case of conversation with no replay yet
-        $case2 = $query2->whereNull('root_id')->whereNotIn('id', function($query) {
+        $case2 = $query2->whereNull('root_id')->whereNotIn('id', function ($query) {
                     $query->select('root_id')->whereNotNull('root_id')
                           ->distinct()->from('messages')
                           ->where('state', MessageHandler::AVAILABLE)

@@ -53,8 +53,7 @@ class Message extends Model
      */
     public function getRootOfConversation()
     {
-        if($this->isRoot())
-        {
+        if ($this->isRoot()) {
             return $this;
         }
 
