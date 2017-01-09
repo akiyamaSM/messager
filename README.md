@@ -12,7 +12,7 @@ __Table of Contents__
     4. [Drafting a message](#drafting-a-message)
 4. [Working with Messages](#how-to-use)
     1. [Getting messages between users](#getting-messages-between-users)
-    2. [Read messages](#read-selected-messages)
+    2. [Read messages](#read-messages)
     3. [Unread messages](#unread-messages)
     4. [Draft messages](#draft-messages)
 
@@ -79,7 +79,7 @@ $sent = $sender->writes($message)
                  ->send();
 ```
 
-### Respond to the message(conversation)
+### Responding the message
 ```php
 $sender = User::find(2);
 
