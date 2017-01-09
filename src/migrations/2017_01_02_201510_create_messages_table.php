@@ -1,7 +1,9 @@
 <?php
+namespace Inani\Messager;
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\Schema;
 
 class CreateMessagesTable extends Migration
 {
@@ -17,7 +19,7 @@ class CreateMessagesTable extends Migration
             $table->integer('from_id')->unsigned();
             $table->integer('to_id')->unsigned()->nullable();
             $table->integer('root_id')->unsigned()->nullable();
-            $table->text('title');
+            $table->text('title')->nullable();
             $table->text('content');
             $table->integer('state')->default(0);
 

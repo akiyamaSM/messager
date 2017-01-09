@@ -1,25 +1,29 @@
 {
-    "name": "inani/messager",
-    "description": "A simple package to handle messages",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Inani El Houssain",
-            "email": "inanielhoussain@gmail.com"
-        }
-    ],
-    "autoload": {
-        "classmap": [
-          "vendor/laravel/laravel/tests/TestCase.php"
-        ],
-        "psr-4": {
-            "Inani\\Messager\\": "src/"
-        }
-    },
-    "minimum-stability": "dev",
-    "require": {
-        "phpunit/phpunit" : "5.*",
-        "fzaninotto/faker": "~1.4",
-        "illuminate/support": "~5"
+  "name": "inani/messager",
+  "description": "A simple package to handle messages",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Inani El Houssain",
+      "email": "inanielhoussain@gmail.com"
     }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Inani\\Messager\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "classmap": [
+      "vendor/laravel/laravel/tests/TestCase.php"
+    ],
+    "files": ["tests/User.php"]
+  },
+  "minimum-stability": "dev",
+  "require-dev": {
+    "phpunit/phpunit": "5.*",
+    "squizlabs/php_codesniffer": "*",
+    "fzaninotto/faker": "~1.4",
+    "laravel/laravel": "5.*"
+  }
 }

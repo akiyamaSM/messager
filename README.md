@@ -1,4 +1,5 @@
-# Laravel Messager
+# Laravel Messager ![Build Status](https://api.travis-ci.org/Sekonda/messager.svg?branch=master)
+
 A convenient way to handle messages between users in a simple way
 
 __Table of Contents__

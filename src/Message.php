@@ -14,6 +14,7 @@ class Message extends Model
         'from_id', 'to_id', 'content', 'state', 'root_id'
     ];
 
+
     /**
      * Get the conversation Messages
      *

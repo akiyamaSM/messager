@@ -13,8 +13,7 @@ trait MessageStatus
      */
     public function canBeSetAsDraft()
     {
-        if( is_null($this->state) || $this->isDraft())
-        {
+        if (is_null($this->state) || $this->isDraft()) {
             return true;
         }
         return false;
@@ -67,8 +66,7 @@ trait MessageStatus
      */
     public function setAsRead()
     {
-        if( $this->canBeSetAsRead())
-        {
+        if ($this->canBeSetAsRead()) {
             $this->state = MessageHandler::READ;
         }
         return $this;
@@ -81,8 +79,7 @@ trait MessageStatus
      */
     public function setAsAvailable()
     {
-        if($this->canBeSetAsSent())
-        {
+        if ($this->canBeSetAsSent()) {
             $this->state = MessageHandler::AVAILABLE;
         }
         return $this;
@@ -95,8 +92,7 @@ trait MessageStatus
      */
     public function setAsDraft()
     {
-        if($this->canBeSetAsDraft())
-        {
+        if ($this->canBeSetAsDraft()) {
             $this->state = MessageHandler::DRAFT;
         }
         return $this;
@@ -129,8 +125,7 @@ trait MessageStatus
      */
     public function hasSender()
     {
-        if(! is_null($this->from_id))
-        {
+        if (! is_null($this->from_id)) {
             return ! is_null(User::find($this->from_id));
         }
         return false;
