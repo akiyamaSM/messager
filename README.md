@@ -73,8 +73,8 @@ list($message, $user) = App\User::createFromRequest($messageData);
 $sender = User::find(2);
 
 $sent = $sender->writes($message)
-                ->to($user)
-                ->send();
+                 ->to($user)
+                 ->send();
 ```
 
 ### Drafting a message
@@ -82,9 +82,9 @@ $sent = $sender->writes($message)
 $sender = User::find(2);
 
 $draft = $sender->writes($message)
-                ->to($user)
-                ->draft()
-                ->keep();
+                  ->to($user)
+                  ->draft()
+                  ->keep();
 ```
 
 ___
@@ -126,6 +126,6 @@ $messages = $userA->received()->to([2, 3, 4, 5)->get();
 
 ### Draft messages
 ```php
-// Gets the draft messages for UserA
+// Get the draft messages for UserA
 $messages = $userA->sent()->inDraft()->get().
 ```
