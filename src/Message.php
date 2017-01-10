@@ -34,4 +34,21 @@ class Message extends Model
         return $this->belongsTo(Message::class, 'root_id', 'id');
     }
 
+    /**
+     * Create a new instance of message
+     *
+     * @param Message $message
+     * @return static
+     */
+    public static function copyFrom(Message $message)
+    {
+        return new static([
+            'content' => $message->content,
+            'title' => $message->title,
+            'from_id' => $message->from_id,
+            'created_at' => $message->created_at,
+            'updated_at' => $message->updated_at,
+            'state' => $message->state,
+        ]);
+    }
 }

@@ -5,10 +5,19 @@ namespace Inani\Messager\Helpers;
 use App\Http\Requests\Request;
 use Inani\Messager\Message;
 use App\User;
+use InvalidArgumentException;
 
 trait MessageAccessible
 {
+    /*
+     * Holding the message instance
+     */
     protected $message;
+
+    /*
+    * Holding the message instance
+    */
+    protected $cc = [];
 
     /**
      * Get all sent messages.
@@ -85,6 +94,17 @@ trait MessageAccessible
         {
             if($this->message->setAsAvailable()->save())
             {
+                array_diff($this->cc, [$this->message->to_id]);
+                if(count($this->cc) > 0)
+                {
+                    foreach($this->cc as $to)
+                    {
+                        $newMessage = Message::copyFrom($this->message);
+                        $newMessage->setReceiverById($to)->save();
+                    }
+                    unset($this->cc);
+                    $this->cc = [];
+                }
                 return $this->message;
             }
         }
@@ -137,29 +157,51 @@ trait MessageAccessible
     }
 
     /**
-     * Get the root of conversation
+     * Add more receivers to the same message
      *
-     * @return $this|\Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @param $attribute
+     * @return $this
+     * @throws InvalidArgumentException
      */
-    public function getRootOfConversation()
+    public function cc($attribute)
     {
-        if($this->isRoot())
+        if($attribute instanceof User)
         {
+            $this->addOnlyIfNotExists($attribute->getKey());
+
             return $this;
         }
 
-        return $this->root;
+        if(is_array($attribute))
+        {
+            foreach($attribute as $value)
+            {
+                if(is_int($value)){
+                    $this->addOnlyIfNotExists($value);
+                }else if($value instanceof User){
+                    $this->addOnlyIfNotExists($value->getKey());
+                }
+            }
+            return $this;
+        }
+
+        throw new InvalidArgumentException;
     }
 
     /**
-     * Assign the id of root
+     * Add the id if not exists
      *
-     * @param Message $mayBeRoot
-     * @return Message
+     * @param $value
+     * @return bool
      */
-    public function setRoot(Message $mayBeRoot)
+    protected function addOnlyIfNotExists($value)
     {
-        $this->root_id = $mayBeRoot->getRootOfConversation($mayBeRoot)->id;
-        return $this;
+        if(!in_array($value, $this->cc))
+        {
+            $this->cc[] = $value;
+            return true;
+        }
+
+        return false;
     }
 }

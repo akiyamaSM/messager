@@ -99,6 +99,29 @@ trait QueryMessages
     }
 
     /**
+     * Read the selected Messages
+     *
+     * @param $query
+     * @return mixed
+     */
+    public function scopeReadThem($query)
+    {
+        return $query->where('state', '!=', MessageHandler::DRAFT)
+                     ->update(['state' => MessageHandler::READ]);
+    }
+
+    /**
+     * Send the selected Messages
+     *
+     * @param $query
+     * @return mixed
+     */
+    public function scopeSend($query)
+    {
+        return $query->whereNotNull('to_id')
+                     ->update(['state' => MessageHandler::AVAILABLE]);
+    }
+    /**
      * Get the Roots of conversations
      *
      * @param $query
@@ -196,7 +219,6 @@ trait QueryMessages
     {
         return $query->where('root_id', $message->id);
     }
-
 
     /**
      * Get the number of new messages related to this conversation

@@ -9,7 +9,7 @@ use Inani\Messager\Message;
 
 class MessagesTest extends \TestCase
 {
-    //use DatabaseTransactions;
+    use DatabaseTransactions;
 
     /**
      * @var User
@@ -279,13 +279,54 @@ class MessagesTest extends \TestCase
         $this->assertEquals(3, $this->receiver->received()->unSeen()->count());
     }
 
+    /** @test */
+    public function it_sends_to_others_as_cc()
+    {
+        $this->makeUsers();
+
+        $user = $this->makeUser();
+        $user2 = $this->makeUser();
+        $user3 = $this->makeUser();
+        $data = [
+            'content' => 'Root of the conversation',
+            'to_id' => $this->receiver->id
+        ];
+
+        list($message, $receiver) = MessageHandler::create($data);
+
+        $this->sender
+            ->writes($message)
+            ->to($receiver)
+            ->cc([$user->id, $user2->id, $user3])
+            ->send();
+
+        $this->assertEquals(1, $this->receiver->received()->unSeen()->count());
+
+        $this->assertEquals(1, $user->received()->unSeen()->count());
+
+        $this->assertEquals(1, $user2->received()->unSeen()->count());
+
+        $this->assertEquals(1, $user3->received()->unSeen()->count());
+
+    }
+
     /**
-     * it creates two users
+     * It creates two users
      *
      */
     public function makeUsers()
     {
         $this->sender = factory(User::class)->create();
         $this->receiver = factory(User::class)->create();
+    }
+
+    /**
+     * Make one user
+     *
+     * @return mixed
+     */
+    public function makeUser()
+    {
+        return factory(User::class)->create();
     }
 }
