@@ -3,6 +3,7 @@
 namespace Inani\Messager\Helpers;
 
 use App\User;
+use Inani\Messager\Message;
 
 trait MessageStatus
 {
@@ -113,6 +114,18 @@ trait MessageStatus
     }
 
     /**
+     * Set receiver of the message By ID
+     *
+     * @param $id
+     * @return $this
+     */
+    public function setReceiverById($id)
+    {
+        $this->to_id = $id;
+        return $this;
+    }
+
+    /**
      * Set sender of the message
      *
      * @param User $user
@@ -137,6 +150,21 @@ trait MessageStatus
     }
 
     /**
+     * Get the root of conversation
+     *
+     * @return $this|\Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function getRootOfConversation()
+    {
+        if($this->isRoot())
+        {
+            return $this;
+        }
+
+        return $this->root;
+    }
+
+    /**
      * Check if the current message instance
      * is root of a conversation
      *
@@ -145,5 +173,17 @@ trait MessageStatus
     public function isRoot()
     {
         return is_null($this->root_id);
+    }
+
+    /**
+     * Assign the id of root
+     *
+     * @param Message $mayBeRoot
+     * @return Message
+     */
+    public function setRoot(Message $mayBeRoot)
+    {
+        $this->root_id = $mayBeRoot->getRootOfConversation($mayBeRoot)->id;
+        return $this;
     }
 }
