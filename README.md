@@ -77,6 +77,14 @@ $sender = User::find(2);
 $sent = $sender->writes($message)
                  ->to($user)
                  ->send();
+		 
+// send to multiple users the same message
+// can execpt a user|array of users| array of ids| or array of users and ids
+$sent = $sender->writes($message)
+                 ->to($user)
+		 ->cc([$user1, $user2])
+		 ->cc([$user3->id, $user4->id])
+                 ->send();
 ```
 
 ### Responding the message
