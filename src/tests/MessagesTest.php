@@ -3,9 +3,9 @@
 namespace Inani\Messager\Tests;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\User;
 use Inani\Messager\Helpers\MessageHandler;
 use Inani\Messager\Message;
+use App\User;
 
 class MessagesTest extends \TestCase
 {
@@ -328,5 +328,10 @@ class MessagesTest extends \TestCase
     public function makeUser()
     {
         return factory(User::class)->create();
+    }
+
+    public function makeTag()
+    {
+
     }
 }
