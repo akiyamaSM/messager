@@ -15,8 +15,8 @@ __Table of Contents__
     2. [Read messages](#read-messages)
     3. [Unread messages](#unread-messages)
     4. [Draft messages](#draft-messages)
-5. [Tags](#how-to-use)  
-    1. [Create and Edit tags](#Create-and-Edit-tags)
+5. [Tags](#tags)  
+    1. [Create and Edit tags](#create-and-Edit-tags)
 
 ## Installation:
 First, install the package through Composer.
