@@ -15,6 +15,8 @@ __Table of Contents__
     2. [Read messages](#read-messages)
     3. [Unread messages](#unread-messages)
     4. [Draft messages](#draft-messages)
+5. [Tags](#how-to-use)  
+    1. [Create and Edit tags](#Create-and-Edit-tags)
 
 ## Installation:
 First, install the package through Composer.
@@ -158,4 +160,17 @@ $messages = $userA->received()->to([2, 3, 4, 5)->get();
 ```php
 // Get the draft messages for UserA
 $messages = $userA->sent()->inDraft()->get().
+```
+## Tags
+You can tag (or structure your messages in diffrent categories).
+
+### Create and Edit tags
+each user can make any number of tags.
+```php
+// create a new tag, $data can be (Tag instance, array, Request)
+$tag = $userA->addNewTag($data);
+
+// Modify the attributes of a tag
+$user->tag($tag)->name("social")->color("#ffff")->apply();
+
 ```
