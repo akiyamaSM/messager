@@ -16,8 +16,8 @@ __Table of Contents__
     3. [Unread messages](#unread-messages)
     4. [Draft messages](#draft-messages)
 5. [Tags](#tags)  
-    1. [Create and Edit tags](#create-and-Edit-tags)
-    2. [Assign tag to message](#asign-tag-to-message)
+    1. [Create and Edit tags](#create-and-edit-tags)
+    2. [Assign tag to message](#assign-tag-to-message)
     3. [Change and get tag of a message](#change-and-get-tag-of-a-message)
     4. [Remove a tag from a message](#remove-a-tag-from-a-message)
 
