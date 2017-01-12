@@ -104,6 +104,78 @@ class TagsTest extends \TestCase
         $this->assertNull($message->concerns($receiver)->getTag());
     }
 
+    /** @test */
+    public function he_removes_a_tag_from_a_message()
+    {
+        $this->user = $this->makeUser();
+        $tag = new Tag([
+            'name' => 'default',
+            'color' => 'gray'
+        ]);
+        $this->user->addNewTag($tag);
+
+        // Send Message!
+        $receiver = $this->makeUser();
+        $data = [
+            'content' => 'SomeContent',
+            'to_id' => $receiver->id
+        ];
+
+        list($message, $receiver) = MessageHandler::create($data);
+
+        $this->user
+            ->writes($message)
+            ->to($receiver)
+            ->send();
+        // its affected
+        $this->assertTrue($message->concerns($this->user)->putTag($tag));
+        // its removed
+        $this->assertTrue($message->concerns($this->user)->removeTag());
+        // it doesn't exist
+        $this->assertNull($message->concerns($this->user)->getTag());
+    }
+
+    /** @test */
+    public function he_can_change_the_tag_of_message()
+    {
+        $this->user = $this->makeUser();
+        $tag = new Tag([
+            'name' => 'default',
+            'color' => 'gray'
+        ]);
+
+        $tagTwo = new Tag([
+            'name' => 'default',
+            'color' => 'gray'
+        ]);
+        $this->user->addNewTag($tag);
+        $this->user->addNewTag($tagTwo);
+
+        // Send Message!
+        $receiver = $this->makeUser();
+        $data = [
+            'content' => 'SomeContent',
+            'to_id' => $receiver->id
+        ];
+
+        list($message, $receiver) = MessageHandler::create($data);
+
+        $this->user
+            ->writes($message)
+            ->to($receiver)
+            ->send();
+
+        $this->assertEquals(1, $this->user->sent()->count());
+
+        $this->assertTrue($message->concerns($this->user)->putTag($tag));
+
+        $this->assertTrue($message->concerns($this->user)->getTag()->name === $tag->name);
+
+        //change the tag
+        $this->assertTrue($message->concerns($this->user)->putTag($tagTwo));
+        $this->assertTrue($message->concerns($this->user)->getTag()->name === $tagTwo->name);
+
+    }
     /**
      * Make one user
      *

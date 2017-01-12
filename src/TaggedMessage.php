@@ -73,4 +73,24 @@ class TaggedMessage extends Model
         }
         return $tagged->tagReceiver;
     }
+
+    /**
+     * Remove a tag from a message of a user
+     *
+     * @param Message $message
+     * @param User $user
+     * @return bool
+     */
+    public function removeTag(Message $message, User $user)
+    {
+        if($message->isSentBy($user))
+        {
+            $this->tag_from_id = null;
+            return $this->save();
+        }
+
+        $this->tag_to_id = null;
+
+        return $this->save();
+    }
 }
