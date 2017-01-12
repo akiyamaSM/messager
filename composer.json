@@ -8,10 +8,12 @@
             "email": "inanielhoussain@gmail.com"
         }
     ],
-    "autoload": {
+    "autoload-dev": {
         "classmap": [
           "vendor/laravel/laravel/tests/TestCase.php"
         ],
+    },
+    "autoload": {
         "psr-4": {
             "Inani\\Messager\\": "src/"
         }
