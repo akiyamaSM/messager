@@ -10,13 +10,16 @@ __Table of Contents__
     2. [Sending the message](#sending-the-message)
     3. [Responding the message](#responding-the-message)
     4. [Drafting a message](#drafting-a-message)
-4. [Working with Messages](#how-to-use)
+4. [Working with Messages](#working-with-messages)
     1. [Getting messages between users](#getting-messages-between-users)
     2. [Read messages](#read-messages)
     3. [Unread messages](#unread-messages)
     4. [Draft messages](#draft-messages)
 5. [Tags](#tags)  
     1. [Create and Edit tags](#create-and-Edit-tags)
+    2. [Assign tag to message](#asign-tag-to-message)
+    3. [Change and get tag of a message](#change-and-get-tag-of-a-message)
+    4. [Remove a tag from a message](#remove-a-tag-from-a-message)
 
 ## Installation:
 First, install the package through Composer.
@@ -173,4 +176,26 @@ $tag = $userA->addNewTag($data);
 // Modify the attributes of a tag
 $user->tag($tag)->name("social")->color("#ffff")->apply();
 
+```
+### Assign tag to message
+Once you have the message and the tag
+```php
+// you'll need the instance of user(to check if sender or receiver)
+// $user and $tag can be ids or instance of User, Tag classes
+$bool = $message->concerns($user)->putTag($tag);
+```
+### Change and get tag of a message
+```php
+// to change the tag just use the same method
+$bool = $message->concerns($user)->putTag($tag);
+
+// to get the tag of the message, null if not tagged
+$tagOrNull = $message->concerns($user)->getTag();
+// 
+```
+
+### Remove a tag from a message
+```php
+// To remove the tag from the message
+$bool = $message->concerns($user)->removeTag();
 ```
