@@ -16,7 +16,7 @@
             "Inani\\Messager\\": "src/"
         }
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "require": {
         "illuminate/support": "~5"
     },
