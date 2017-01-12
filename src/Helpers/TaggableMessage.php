@@ -61,11 +61,30 @@ trait TaggableMessage {
         return $taggedMessage->saveTag($this, $this->user, $tag);
     }
 
+    /**
+     * Get a tag
+     *
+     * @return Tag|null
+     */
     public function getTag()
     {
         if(!is_null($this->user)){
             /** @var \Inani\Messager\Message $this */
             return TaggedMessage::getTagByMessageAndUser($this, $this->user);
         }
+    }
+
+    /**
+     * Remove a tag
+     *
+     * @return mixed
+     */
+    public function removeTag()
+    {
+        $taggedMessage = TaggedMessage::where([
+            'message_id' => $this->getKey()
+        ])->firstOrFail();
+
+        return $taggedMessage->removeTag($this, $this->user);
     }
 }
