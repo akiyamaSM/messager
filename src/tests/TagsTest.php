@@ -2,11 +2,11 @@
 
 namespace Inani\Messager\Tests;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\User;
-use Illuminate\Http\Request;
+use Inani\Messager\Helpers\MessageHandler;
 use Inani\Messager\Tag;
-use Mockery\CountValidator\Exception;
 
 class TagsTest extends \TestCase
 {
@@ -69,6 +69,39 @@ class TagsTest extends \TestCase
 
         $this->assertEquals("social", $this->user->tags()->first()->name);
         $this->assertEquals("blue", $this->user->tags()->first()->color);
+    }
+
+    /** @test */
+    public function he_can_tag_his_conversation()
+    {
+        $this->user = $this->makeUser();
+        $tag = new Tag([
+            'name' => 'default',
+            'color' => 'gray'
+        ]);
+        $this->user->addNewTag($tag);
+
+        // Send Message!
+        $receiver = $this->makeUser();
+        $data = [
+            'content' => 'SomeContent',
+            'to_id' => $receiver->id
+        ];
+
+        list($message, $receiver) = MessageHandler::create($data);
+
+        $this->user
+            ->writes($message)
+            ->to($receiver)
+            ->send();
+
+        $this->assertEquals(1, $this->user->sent()->count());
+
+        $this->assertTrue($message->concerns($this->user)->putTag($tag));
+
+        $this->assertTrue($message->concerns($this->user)->getTag()->name === $tag->name);
+
+        $this->assertNull($message->concerns($receiver)->getTag());
     }
 
     /**

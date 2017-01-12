@@ -186,4 +186,15 @@ trait MessageStatus
         $this->root_id = $mayBeRoot->getRootOfConversation($mayBeRoot)->id;
         return $this;
     }
+
+    /**
+     * Check if the sender is the user
+     *
+     * @param User $user
+     * @return bool
+     */
+    public function isSentBy(User $user)
+    {
+        return $this->from_id == $user->getKey();
+    }
 }
