@@ -1,4 +1,5 @@
 <?php
+
 namespace Inani\Messager\Helpers;
 
 use App\Http\Requests\Request;
