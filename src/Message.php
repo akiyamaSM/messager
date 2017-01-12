@@ -3,12 +3,13 @@
 namespace Inani\Messager;
 
 use Inani\Messager\Helpers\MessageStatus;
+use Inani\Messager\Helpers\QueryMessages;
 use Inani\Messager\Helpers\TagsCreator;
 use Illuminate\Database\Eloquent\Model;
 
 class Message extends Model
 {
-    use MessageStatus, TagsCreator;
+    use MessageStatus, QueryMessages ,TagsCreator;
 
     protected $fillable = [
         'from_id', 'to_id', 'content', 'state', 'root_id'

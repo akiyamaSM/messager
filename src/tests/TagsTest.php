@@ -52,6 +52,7 @@ class TagsTest extends \TestCase
         }
         $this->assertNotNull($e);
     }
+
     /** @test */
     public function he_modifies_the_tag_info()
     {
