@@ -14,7 +14,7 @@ class CreateTaggedMessagesTable extends Migration
     {
         Schema::create('tagged_messages', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('message_id')->unsigned();
+            $table->integer('message_id')->unsigned()->unique();
             $table->integer('tag_from_id')->unsigned()->nullable();
             $table->integer('tag_to_id')->unsigned()->nullable();
             $table->timestamps();
