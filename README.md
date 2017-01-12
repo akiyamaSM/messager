@@ -51,9 +51,10 @@ To setup a model all you have to do is add (and import) the `MessageAccessible` 
 
 ```php
 use Inani\Messager\Helpers\MessageAccessible;
+use Inani\Messager\Helpers\TagsCreator;
 class User extends Model
 {
-    use MessageAccessible;
+    use MessageAccessible, TagsCreator;
     ...
 }
 ```
