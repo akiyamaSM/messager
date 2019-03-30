@@ -1,3 +1,4 @@
+(NOT MAINTAINED)
 # Laravel Messager
 A convenient way to handle messages between users in a simple way
 
