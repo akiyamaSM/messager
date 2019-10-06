@@ -167,7 +167,7 @@ $messages = $userA->received()->to([2, 3, 4, 5)->get();
 $messages = $userA->sent()->inDraft()->get().
 ```
 ## Tags
-You can tag (or structure your messages in diffrent categories).
+You can tag (or structure your messages in different categories).
 
 ### Create and Edit tags
 each user can make any number of tags.
